@@ -11,21 +11,19 @@ const user = {
     '',
 }
 const navigation = [
-  { name: 'Dashboard', href: '/user/dashboard', current: true },
-  { name: 'My Plans', href: '/user/dashboard/myplans', current: false },
-  { name: 'Search Plans', href: '/user/dashboard/plans', current: false },
-  // { name: 'Calendar', href: '#', current: false },
-  // { name: 'Reports', href: '#', current: false },
+  { name: 'Dashboard', href: '/company/dashboard', current: false },
+  { name: 'Plans Management', href: '/company/dashboard/plans', current: false },
+  { name: 'Users Management', href: '/company/dashboard/users', current: true },
 ]
 const userNavigation = [
-  { name: 'Sign out', href: '#' },
+  { name: 'Sign out', href: '' },
 ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function UserDashboard() {
+export default function CompanyPlans() {
   return (
     <>
       <div className="min-h-full">

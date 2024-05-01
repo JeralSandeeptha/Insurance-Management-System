@@ -9,6 +9,10 @@ import CompanyLogin from '../pages/company_login/CompanyLogin';
 import CompanyRegister from '../pages/company_register/CompanyRegister';
 import { AppProvider } from '../context/AppContext';
 import NotFound from '../pages/notfound/NotFound';
+import UserPlans from '../pages/user_plans/UserPlans';
+import Plans from '../pages/plans/Plans';
+import CompanyPlans from '../pages/company_plans/CompanyPlans';
+import CompanyUsers from '../pages/company_users/CompanyUsers';
 
 const Navigation = () => {
   return (
@@ -19,7 +23,11 @@ const Navigation = () => {
           <Route path='/register' Component={Register}/>
           <Route path='/login' Component={Login}/>
           <Route path='/company/dashboard' Component={CompanyDashboard}/>
+          <Route path='/company/dashboard/plans' Component={CompanyPlans}/>
+          <Route path='/company/dashboard/users' Component={CompanyUsers}/>
           <Route path='/user/dashboard' Component={UserDashboard}/>
+          <Route path='/user/dashboard/myplans' Component={UserPlans}/>
+          <Route path='/user/dashboard/plans' Component={Plans}/>
           <Route path='/company/login' Component={CompanyLogin}/>
           <Route path='/company/register' Component={CompanyRegister}/>
           <Route path='*' Component={NotFound}/>

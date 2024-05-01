@@ -8,11 +8,11 @@ const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
   imageUrl:
-    '',
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '/user/dashboard', current: true },
-  { name: 'My Plans', href: '/user/dashboard/myplans', current: false },
+  { name: 'Dashboard', href: '/user/dashboard', current: false },
+  { name: 'My Plans', href: '/user/dashboard/plans', current: true },
   { name: 'Search Plans', href: '/user/dashboard/plans', current: false },
   // { name: 'Calendar', href: '#', current: false },
   // { name: 'Reports', href: '#', current: false },
@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function UserDashboard() {
+export default function UserPlans() {
   return (
     <>
       <div className="min-h-full">
@@ -82,7 +82,7 @@ export default function UserDashboard() {
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/10337/10337609.png" alt="" />
+                            <img className="h-8 w-8 rounded-full" src='https://cdn-icons-png.flaticon.com/512/10337/10337609.png' alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -98,15 +98,15 @@ export default function UserDashboard() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <Link
-                                    to={item.href}
+                                  <a
+                                    href={item.href}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700'
                                     )}
                                   >
                                     {item.name}
-                                  </Link>
+                                  </a>
                                 )}
                               </Menu.Item>
                             ))}
