@@ -8,6 +8,7 @@ import UserDashboard from '../pages/user_dashboard/UserDashboard';
 import CompanyLogin from '../pages/company_login/CompanyLogin';
 import CompanyRegister from '../pages/company_register/CompanyRegister';
 import { AppProvider } from '../context/AppContext';
+import NotFound from '../pages/notfound/NotFound';
 
 const Navigation = () => {
   return (
@@ -21,6 +22,7 @@ const Navigation = () => {
           <Route path='/user/dashboard' Component={UserDashboard}/>
           <Route path='/company/login' Component={CompanyLogin}/>
           <Route path='/company/register' Component={CompanyRegister}/>
+          <Route path='*' Component={NotFound}/>
         </Routes>
       </BrowserRouter>
     </AppProvider>
