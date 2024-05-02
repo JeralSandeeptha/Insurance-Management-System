@@ -10,7 +10,7 @@ const adminRoutes = require('./src/api/routes/adminRoutes');
 const userRoutes = require('./src/api/routes/userRoutes');
 const companyRoutes = require('./src/api/routes/companyRoutes');
 const employeeRoutes = require('./src/api/routes/employeeRoutes');
-const planRoutesRoutes = require('./src/api/routes/planRoutes');
+const planRoutes = require('./src/api/routes/planRoutes');
 
 //import utils
 const logger = require('./src/utils/logger');

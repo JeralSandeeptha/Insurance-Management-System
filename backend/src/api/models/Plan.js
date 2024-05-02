@@ -31,4 +31,4 @@ const PlanSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Admin', PlanSchema);
+module.exports = mongoose.model('Plan', PlanSchema);

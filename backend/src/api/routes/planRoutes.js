@@ -4,7 +4,7 @@ const {
     verifyTokenAndAdmin,
     verifyTokenAndAuthorization,
 } = require('../middlewares/verifyToken');
-import { addPlan, getPlan, getPlans, getPlansByCompanyId } from '../controllers/planController';
+const { addPlan, getPlan, getPlans, getPlansByCompanyId } = require('../controllers/planController');
 
 const router = express.Router();
 
