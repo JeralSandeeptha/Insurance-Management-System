@@ -47,14 +47,14 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const user = await UserSchema.findOne({ username: req.body.username });
+        const user = await UserSchema.findOne({ email: req.body.email });
         if (!user){ 
-            logger.error("Username not found"); 
+            logger.error("Email not found"); 
             return res.status(404).json(
                 new ErrorResponse(
                     400,
                     "User login query was failed",
-                    "Username not found"
+                    "Email not found"
                 )
             );
         }
@@ -71,7 +71,7 @@ const loginUser = async (req, res) => {
 
         const { password, ...others } = user._doc;
 
-        const token = jwt.sign({ id: user._id, status: user.status }, 'privateKey');
+        const token = jwt.sign({ id: user._id }, 'privateKey');
 
         return res.status(200).json(
             new SuccessResponse(
