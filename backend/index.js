@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 //import routes
+const adminRoutes = require('./src/api/routes/adminRoutes');
 
 //import utils
 const logger = require('./src/utils/logger');
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json({ limit: '100mb' }));
 
 //usages of endpoints
+app.use('/api/v1/admin', adminRoutes);
 
 const port = process.env.PORT || 5050;
 
