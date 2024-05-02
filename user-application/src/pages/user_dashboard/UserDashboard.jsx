@@ -1,8 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 
 const user = {
   name: 'Tom Cook',
@@ -26,6 +27,24 @@ function classNames(...classes) {
 }
 
 export default function UserDashboard() {
+
+  const { user, isLoggedIn } = useContext(AppContext);
+  const { fname, lname } = user;
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
+  
+    setTimeout(() => {
+      navigate('/');
+    }, 100); 
+  }
+
+  console.log(user, isLoggedIn);
+
   return (
     <>
       <div className="min-h-full">
@@ -99,6 +118,7 @@ export default function UserDashboard() {
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
                                   <Link
+                                    onClick={logout}
                                     to={item.href}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
@@ -185,8 +205,17 @@ export default function UserDashboard() {
 
         {/* dashboard */}
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+            <h4 className="text-3xl font-bold tracking-tight text-gray-900">
+              {
+                isLoggedIn ? (
+                  `Welcome ${fname} ${lname}`
+                ) : (
+                  'Welcome Guest'
+                )
+              }
+            </h4>
           </div>
         </header>
         <main>

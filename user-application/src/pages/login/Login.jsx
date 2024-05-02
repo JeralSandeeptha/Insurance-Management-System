@@ -1,9 +1,68 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/icon/icon-02-primary.png';
+import axios from 'axios';
+import baseURL from '../../api/baseURL';
+import { AppContext } from '../../context/AppContext';
+import { useEffect } from 'react';
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  const { setToken, setUser, setIsLoggedIn, isLoggedIn, user, token } = useContext(AppContext);
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const login = (e) => {
+    e.preventDefault();
+    try {
+        console.log({
+          email: email,
+          password: password
+        });
+        axios.post(`${baseURL}/user/login`, {
+          email: email,
+          password: password
+        })
+          .then((res) => {
+            console.log(res.data.data);
+            alert('User login successfully');
+            navigate('/user/dashboard');
+            const user = {
+              _id: res.data.data._id,
+              fname: res.data.data.fname,
+              lname: res.data.data.lname,
+              age: res.data.data.age,
+              address: res.data.data.address,
+              mobile: res.data.data.mobile,
+              email: res.data.data.email,
+              nic: res.data.data.nic,
+              createdAt: res.data.data.createdAt,
+              updatedAt: res.data.data.updatedAt,
+            };
+            const token = res.data.data.token;
+            var userString = JSON.stringify(user);
+            var tokenString = JSON.stringify(token);
+            localStorage.setItem('user', userString);
+            localStorage.setItem('token', tokenString);
+            localStorage.setItem('isLoggedIn', true);
+          })
+          .catch((error) => {
+            console.log(error);
+            alert('Please enter all the required fields');
+          })
+    }catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    console.log(isLoggedIn, user, token);
+  },[]);
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 
@@ -17,7 +76,10 @@ const Login = () => {
           <div>
             <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div className="mt-2">
-              <input id="email" name="email" type="email" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input value={email} onChange={(e) => {
+                console.log(e.target.value);
+                setEmail(e.target.value);
+              }} id="email" name="email" type="email" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
@@ -29,12 +91,15 @@ const Login = () => {
               </div>
             </div>
             <div className="mt-2">
-              <input id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input value={password} onChange={(e) => {
+                console.log(e.target.value);
+                setPassword(e.target.value);
+              }} id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
           <div>
-            <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
+            <button onClick={login} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
           </div>
         </form>
 
