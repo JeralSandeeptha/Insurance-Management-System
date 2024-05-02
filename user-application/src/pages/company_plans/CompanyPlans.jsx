@@ -1,8 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useContext, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
+import { useState } from 'react';
+import baseURL from '../../api/baseURL';
+import axios from 'axios';
 
 const user = {
   name: 'Tom Cook',
@@ -24,6 +28,36 @@ function classNames(...classes) {
 }
 
 export default function CompanyPlans() {
+
+  const [name, setName] = useState();
+  const [image, setImage] = useState();
+  const [price, setPrice] = useState();
+  const [description, setDescription] = useState();
+
+  const [plans, setPlans] = useState([]);
+
+  const { user } = useContext(AppContext);
+  const { company } = user;
+
+  const getPlans = () => {
+    try {
+      axios.get(`${baseURL}/plans/getByComanyId/${company}`) 
+        .then((res) => {
+          console.log(res.data.data);
+          setPlans(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getPlans();
+  }, []);
+
   return (
     <>
       <div className="min-h-full">
@@ -188,9 +222,63 @@ export default function CompanyPlans() {
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr'}} className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <div className="left" style={{paddingRight: '20px'}}>
+              plans
+            </div>
+            <div className="right">
+              <h3 style={{marginBottom: '20px'}}>Add Insurance Plan</h3>
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                  <div className="mt-2">
+                    <input value={name} onChange={(e) => {
+                      console.log(e.target.value);
+                      setName(e.target.value);
+                    }} id="email" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
 
-          </div>
+                <div>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                  <div className="mt-2">
+                    <input value={description} onChange={(e) => {
+                      console.log(e.target.value);
+                      setDescription(e.target.value);
+                    }}  id="email" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-sm font-medium leading-6 text-gray-900">Price</label>
+                  </div>
+                  <div className="mt-2">
+                    <input value={price} onChange={(e) => {
+                      console.log(e.target.value);
+                      setPrice(e.target.value);
+                    }}  id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-sm font-medium leading-6 text-gray-900">Image</label>
+                  </div>
+                  <div className="mt-2">
+                    <input value={image} onChange={(e) => {
+                      console.log(e.target.value);
+                      setImage(e.target.value);
+                    }}  id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
+
+                <div>
+                  <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Plan</button>
+                </div>
+              </form>
+            </div>
+            </div>
         </main>
       </div>
     </>

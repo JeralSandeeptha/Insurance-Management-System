@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
         const newUser = new UserSchema({
             email: email,
             mobile: mobile,
-            fname, lname,
+            fname: lname,
             age: age,
             nic: nic,
             address: address,
