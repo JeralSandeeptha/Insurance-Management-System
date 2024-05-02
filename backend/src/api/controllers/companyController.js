@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const CompanyModel = require('../models/Company');
+const EmployeeModel = require('../models/Employee');
 const logger = require('../../utils/logger');
 const SuccessResponse = require('../../utils/SuccessResponse');
 const ErrorResponse = require('../../utils/ErrorResponse');
@@ -22,12 +23,22 @@ const registerCompany = async (req, res) => {
 
             const user = await newUser.save();
 
+            const newEmployee = new EmployeeModel({
+                name: user.name,
+                email: user.email,
+                password: hashPassword,
+                companyId: user._id
+            });
+
+            const employee = await newEmployee.save();
+
             logger.info("Company register query was successful");
             res.status(201).json(
                 new SuccessResponse(
                     201,
-                    "Company register query was successful",
-                    user
+                    "Company register query was successful and created super employee",
+                    user, 
+                    employee
                 )
             );
         } catch (error) {
