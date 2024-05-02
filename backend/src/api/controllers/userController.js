@@ -8,14 +8,18 @@ const ErrorResponse = require('../../utils/ErrorResponse');
 
 const registerUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password, mobile, fname, lname, age, nic, address} = req.body;
         const salt = await  bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
         const newUser = new UserSchema({
-            username: username,
+            email: email,
+            mobile: mobile,
+            fname, lname,
+            age: age,
+            nic: nic,
+            address: address,
             password: hashPassword,
-            status: "active"
         });
 
         const user = await newUser.save();
@@ -162,9 +166,14 @@ const updateUser = async (req, res) => {
                         const updatedUser = await UserSchema.findByIdAndUpdate(
                             req.params.userId, 
                             { $set: {
-                                username: req.body.username,
+                                email: req.body.email,
+                                mobile: req.body.mobile,
+                                fname: req.body.fname,
+                                lname: req.body.lname,
+                                age: req.body.age,
+                                nic: req.body.nic,
+                                address: req.body.address,
                                 password: req.body.password,
-                                status: user.status
                             }}, 
                             { new: true }
                         );
