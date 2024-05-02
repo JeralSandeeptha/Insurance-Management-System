@@ -1,8 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
+import baseURL from '../../api/baseURL';
+import axios from 'axios';
+import './CompanyUsers.css';
 
 const user = {
   name: 'Tom Cook',
@@ -24,6 +28,73 @@ function classNames(...classes) {
 }
 
 export default function CompanyPlans() {
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const [employees, setEmployees] = useState([]);
+
+  const { user } = useContext(AppContext);
+  const { company } = user;
+
+  const reset = () => {
+    setEmail();
+    setName();
+    setPassword();
+  }
+
+  const registerEmployee = (e) => {
+    e.preventDefault();
+    try {
+      console.log({
+        name: name,
+        email: email,
+        password: password,
+        companyId: company
+      });
+      axios.post(`${baseURL}/employee`, {
+        name: name,
+        email: email,
+        password: password,
+        companyId: company
+      })
+        .then((res) => {
+          console.log(res.data.data);
+          setEmail('');
+          setName('');
+          setPassword('');
+          getEmployees();
+          alert('Employee added');
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('Please fill required feiled');
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getEmployees = () => {
+    try {
+      axios.get(`${baseURL}/employee/getByComanyId/${company}`) 
+        .then((res) => {
+          console.log(res.data.data);
+          setEmployees(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getEmployees();
+  });
+
   return (
     <>
       <div className="min-h-full">
@@ -188,8 +259,72 @@ export default function CompanyPlans() {
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <div style={{display:'grid', gridTemplateColumns:'2fr 1fr'}} className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <div className="left" style={{paddingRight: '20px'}}>
+              {
+                employees.length < 0 ? (
+                  <h5>No Employee Data</h5>
+                ) : (
+                  employees.map((employee, index) => {
+                    return (
+                      <li class="employee-card flex justify-between gap-x-6 px-5" key={index}>
+                        <div class="flex min-w-0 gap-x-4">
+                          <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png" alt=""/>
+                          <div class="min-w-0 flex-auto">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{employee.name}</p>
+                            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{employee.email}</p>
+                          </div>
+                        </div>
+                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                          <p class="text-sm leading-6 text-gray-900">Employee : {employee._id}</p>
+                          <p class="mt-1 text-xs leading-5 text-gray-500">Joined Date : <time datetime="2023-01-23T13:23Z">{employee.createdAt}</time></p>
+                        </div>
+                      </li>
+                    )
+                  })
+                )
+              }
+            </div>
+            <div className="right">
+              <h3 style={{marginBottom: '20px'}}>Add Employee</h3>
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                  <div className="mt-2">
+                    <input value={name} onChange={(e) => {
+                      console.log(e.target.value);
+                      setName(e.target.value);
+                    }} id="email" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
 
+                <div>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                  <div className="mt-2">
+                    <input value={email} onChange={(e) => {
+                      console.log(e.target.value);
+                      setEmail(e.target.value);
+                    }} id="email" name="email" type="email" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                  </div>
+                  <div className="mt-2">
+                    <input value={password} onChange={(e) => {
+                      console.log(e.target.value);
+                      setPassword(e.target.value);
+                    }} id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  </div>
+                </div>
+
+                <div>
+                  <button onClick={registerEmployee} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Employee</button>
+                </div>
+              </form>
+            </div>
           </div>
         </main>
       </div>
