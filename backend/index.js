@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 //import routes
 const adminRoutes = require('./src/api/routes/adminRoutes');
 const userRoutes = require('./src/api/routes/userRoutes');
+const companyRoutes = require('./src/api/routes/companyRoutes');
+const employeeRoutes = require('./src/api/routes/employeeRoutes');
 
 //import utils
 const logger = require('./src/utils/logger');
@@ -20,6 +22,8 @@ app.use(express.json({ limit: '100mb' }));
 //usages of endpoints
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/company', companyRoutes);
+app.use('/api/v1/employee', employeeRoutes);
 
 const port = process.env.PORT || 5050;
 

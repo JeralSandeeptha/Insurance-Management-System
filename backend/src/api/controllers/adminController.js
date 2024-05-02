@@ -66,7 +66,7 @@ const loginAdmin = async (req, res) => {
 
         const { password, ...others } = admin._doc;
 
-        const token = jwt.sign({ id: admin._id, isAdmin: admin.isAdmin }, 'privateKey');
+        const token = jwt.sign({ id: admin._id }, 'privateKey');
 
         return res.status(200).json(
             new SuccessResponse(
