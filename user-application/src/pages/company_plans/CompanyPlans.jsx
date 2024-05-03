@@ -39,9 +39,37 @@ export default function CompanyPlans() {
   const { user } = useContext(AppContext);
   const { company } = user;
 
+  const createPlan = (e) => {
+    e.preventDefault();
+    try {
+      axios.post(`${baseURL}/plan`, {
+        image: image,
+        description: description,
+        name: name,
+        price: price,
+        companyId: company
+      }) 
+        .then((res) => {
+          console.log(res.data.data);
+          setName('');
+          setImage('');
+          setDescription('');
+          setPrice('');
+          alert('New Plan Added Successfully');
+          getPlans();
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('Please enter details or plan added failed');
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   const getPlans = () => {
     try {
-      axios.get(`${baseURL}/plans/getByComanyId/${company}`) 
+      axios.get(`${baseURL}/plan/getByCompanyId/${company}`) 
         .then((res) => {
           console.log(res.data.data);
           setPlans(res.data.data);
@@ -56,7 +84,7 @@ export default function CompanyPlans() {
 
   useEffect(() => {
     getPlans();
-  }, []);
+  });
 
   return (
     <>
@@ -223,8 +251,24 @@ export default function CompanyPlans() {
         </header>
         <main>
         <div style={{display:'grid', gridTemplateColumns:'2fr 1fr'}} className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <div className="left" style={{paddingRight: '20px'}}>
-              plans
+            <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}} className="left">
+              {
+                plans.length < 0 ? (
+                  <h5>No Insurance Plans...</h5>
+                ) : (
+                  plans.map((plan, index) => {
+                    return (  
+                      <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
+                        <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
+                        <div>
+                          <h4 style={{marginTop: '10px'}}>{plan.name}</h4>
+                          <h6>Rs: {plan.price} /-</h6>
+                        </div>
+                      </div>
+                    )
+                  })
+                )
+              }
             </div>
             <div className="right">
               <h3 style={{marginBottom: '20px'}}>Add Insurance Plan</h3>
@@ -257,7 +301,7 @@ export default function CompanyPlans() {
                     <input value={price} onChange={(e) => {
                       console.log(e.target.value);
                       setPrice(e.target.value);
-                    }}  id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    }}  id="password" name="password" type="text" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                   </div>
                 </div>
                 
@@ -269,12 +313,12 @@ export default function CompanyPlans() {
                     <input value={image} onChange={(e) => {
                       console.log(e.target.value);
                       setImage(e.target.value);
-                    }}  id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    }}  id="password" name="password" type="text" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                   </div>
                 </div>
 
                 <div>
-                  <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Plan</button>
+                  <button onClick={createPlan} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add Plan</button>
                 </div>
               </form>
             </div>
