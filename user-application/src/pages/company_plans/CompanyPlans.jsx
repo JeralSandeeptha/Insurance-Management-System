@@ -254,17 +254,19 @@ export default function CompanyPlans() {
             <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}} className="left">
               {
                 plans.length < 0 ? (
-                  <h5>No Insurance Plans...</h5>
+                  <h5 style={{textDecoration:'none'}}>No Insurance Plans...</h5>
                 ) : (
                   plans.map((plan, index) => {
                     return (  
-                      <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
-                        <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
-                        <div>
-                          <h4 style={{marginTop: '10px'}}>{plan.name}</h4>
-                          <h6>Rs: {plan.price} /-</h6>
+                      <Link to={`/company/dashboard/plans/${plan._id}`}>
+                        <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
+                          <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
+                          <div>
+                            <h4 style={{textDecoration:'none', marginTop: '10px'}}>{plan.name}</h4>
+                            <h6 style={{textDecoration:'none'}}>Rs: {plan.price} /-</h6>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     )
                   })
                 )

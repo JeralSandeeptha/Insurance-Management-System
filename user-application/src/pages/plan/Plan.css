@@ -1,0 +1,14 @@
+.users-status {
+    width: 100%;
+    min-height: 20vh;
+    display: grid;
+    padding: 0 50px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.users-status .left{
+
+}
+.users-status .right{
+
+}

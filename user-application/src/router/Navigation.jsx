@@ -13,6 +13,7 @@ import UserPlans from '../pages/user_plans/UserPlans';
 import Plans from '../pages/plans/Plans';
 import CompanyPlans from '../pages/company_plans/CompanyPlans';
 import CompanyUsers from '../pages/company_users/CompanyUsers';
+import Plan from '../pages/plan/Plan';
 
 const Navigation = () => {
   return (
@@ -28,6 +29,7 @@ const Navigation = () => {
           <Route path='/user/dashboard' Component={UserDashboard}/>
           <Route path='/user/dashboard/myplans' Component={UserPlans}/>
           <Route path='/user/dashboard/plans' Component={Plans}/>
+          <Route path='/company/dashboard/plans/:planId' Component={Plan}/>
           <Route path='/company/login' Component={CompanyLogin}/>
           <Route path='/company/register' Component={CompanyRegister}/>
           <Route path='*' Component={NotFound}/>
