@@ -3,6 +3,12 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { AppContext } from '../../context/AppContext';
+import baseURL from '../../api/baseURL';
 
 const user = {
   name: 'Tom Cook',
@@ -26,6 +32,50 @@ function classNames(...classes) {
 }
 
 export default function UserPlans() {
+
+  const [acceptedPlans, setAcceptedPlans] = useState([]);
+  const [rejectedPlans, setRejectedPlans] = useState([]);
+
+  const { user } = useContext(AppContext);
+
+  const getAcceptedPlans = () => {
+    try {
+      axios.get(`${baseURL}/plan/getAcceptedPlansByUserId/${user._id}`)
+        .then((res) => {
+          console.log(res.data.data);
+          setAcceptedPlans(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  const getRejectedPlans = () => {
+    try {
+      axios.get(`${baseURL}/plan/getRejectedPlansByUserId/${user._id}`)
+        .then((res) => {
+          console.log(res.data.data);
+          setRejectedPlans(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getAcceptedPlans();
+    getRejectedPlans();
+  });
+
+  console.log("user:", user);
+  console.log("userId:", user._id);
+
   return (
     <>
       <div className="min-h-full">
@@ -186,12 +236,51 @@ export default function UserPlans() {
         {/* dashboard */}
         <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">My Plans</h1>
           </div>
         </header>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-
+            <h1 className='font-bold'>My Accepted Plans</h1>
+            <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap'}} className="left">
+                {
+                  acceptedPlans.length < 0 ? (
+                    <h5 style={{textDecoration:'none'}}>No accepted plans for me</h5>
+                  ) : (
+                    acceptedPlans.map((plan, index) => {
+                      return (  
+                        <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
+                          <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
+                          <div>
+                            <h4 style={{textDecoration:'none', marginTop: '10px'}}>{plan.name}</h4>
+                            <h6 style={{textDecoration:'none'}}>Rs: {plan.price} /-</h6>
+                          </div>
+                        </div>
+                      )
+                    })
+                  )
+                }
+              </div>
+              <h1 className="font-bold">My Rejected Plans</h1>
+              <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap'}} className="left">
+                {
+                  rejectedPlans.length < 0 ? (
+                    <h5 style={{textDecoration:'none'}}>No rejected plans for me</h5>
+                  ) : (
+                    rejectedPlans.map((plan, index) => {
+                      return (  
+                        <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
+                          <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
+                          <div>
+                            <h4 style={{textDecoration:'none', marginTop: '10px'}}>{plan.name}</h4>
+                            <h6 style={{textDecoration:'none'}}>Rs: {plan.price} /-</h6>
+                          </div>
+                        </div>
+                      )
+                    })
+                  )
+                }
+              </div>
           </div>
         </main>
       </div>

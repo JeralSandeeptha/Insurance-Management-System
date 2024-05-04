@@ -152,6 +152,7 @@ const addRejectedUser = async (req, res) => {
         );
     }
 }
+
 const addAcceptedUser = async (req, res) => {
     try {
 
@@ -184,6 +185,7 @@ const addAcceptedUser = async (req, res) => {
         );
     }
 }
+
 const removeRejectedUser = async (req, res) => {
     try {
 
@@ -250,6 +252,66 @@ const removeAcceptedUser = async (req, res) => {
     }
 }
 
+const getAcceptedPlansByUserId = async (req, res) => {
+    try {
+
+        const plans = await PlanSchema.find();
+        console.log(plans);
+
+        const userHasAcceptedPlan = plans.filter(plan => plan.acceptedUsers.includes(req.params.userId));
+        console.log(userHasAcceptedPlan);
+
+        logger.info("Get accepted plans by userId query was successful");
+        return res.status(200).json(
+            new SuccessResponse(
+                200,
+                "Get accepted plans by userId query was successful",
+                userHasAcceptedPlan
+            )
+        );
+    } catch (error) {
+        logger.error("Get accepted plans by userId query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Get accepted plans by userId Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+
+const getRejectedPlansByUserId = async (req, res) => {
+    try {
+
+        const plans = await PlanSchema.find();
+        console.log(plans);
+
+        const userHasRejectedPlans = plans.filter(plan => plan.rejectedUsers.includes(req.params.userId));
+        console.log(userHasRejectedPlans);
+
+        logger.info("Get rejected plans by userId query was successful");
+        return res.status(200).json(
+            new SuccessResponse(
+                200,
+                "Get rejected plans by userId query was successful",
+                userHasRejectedPlans
+            )
+        );
+    } catch (error) {
+        logger.error("Get rejected plans by userId query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Get rejected plans by userId Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+
 module.exports = {
     addPlan,
     getPlan,
@@ -258,5 +320,7 @@ module.exports = {
     addRejectedUser,
     addAcceptedUser,
     removeRejectedUser,
-    removeAcceptedUser
+    removeAcceptedUser,
+    getAcceptedPlansByUserId,
+    getRejectedPlansByUserId
 };
