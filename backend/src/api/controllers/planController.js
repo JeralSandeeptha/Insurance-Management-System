@@ -42,7 +42,10 @@ const addPlan = async (req, res) => {
 const getPlan = async (req, res) => {
     try {
 
-        const plan = await PlanSchema.findById(req.params.planId);
+        const plan = await PlanSchema.findById(req.params.planId)
+            .populate('rejectedUsers')
+            .populate('acceptedUsers')
+            .exec();
 
         logger.info("Get plan query was successful");
         return res.status(200).json(
@@ -117,9 +120,143 @@ const getPlansByCompanyId = async (req, res) => {
     }
 }
 
+const addRejectedUser = async (req, res) => {
+    try {
+
+        const user = await UserSchema.findOne({ nic: req.body.nic });
+        console.log(user._id);
+
+        const updatedPlan = await PlanSchema.findByIdAndUpdate(
+            req.params.planId,
+            { $push: { rejectedUsers: user._id } },
+            { new: true },
+        );
+
+        logger.info("Add rejected user query was successful");
+        return res.status(201).json(
+            new SuccessResponse(
+                201,
+                "Add rejected user query was successful",
+                updatedPlan
+            )
+        );
+    } catch (error) {
+        logger.error("Add rejected user query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Add rejected user Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+const addAcceptedUser = async (req, res) => {
+    try {
+
+        const user = await UserSchema.findOne({ nic: req.body.nic });
+        console.log(user._id);
+
+        const updatedPlan = await PlanSchema.findByIdAndUpdate(
+            req.params.planId,
+            { $push: { acceptedUsers: user._id } },
+            { new: true },
+        );
+
+        logger.info("Add accepted user query was successful");
+        return res.status(201).json(
+            new SuccessResponse(
+                201,
+                "Add accepted user query was successful",
+                updatedPlan
+            )
+        );
+    } catch (error) {
+        logger.error("Add accepted user query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Add accepted user Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+const removeRejectedUser = async (req, res) => {
+    try {
+
+        const user = await UserSchema.findOne({ nic: req.body.nic });
+        console.log(user._id);
+
+        const updatedPlan = await PlanSchema.findByIdAndUpdate(
+            req.params.planId,
+            { $pull: { rejectedUsers: user._id } },
+            { new: true },
+        );
+
+        logger.info("Remove rejected user query was successful");
+        return res.status(201).json(
+            new SuccessResponse(
+                201,
+                "Remove rejected user query was successful",
+                updatedPlan
+            )
+        );
+    } catch (error) {
+        logger.error("Remove rejected user query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Remove rejected user Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+
+const removeAcceptedUser = async (req, res) => {
+    try {
+
+        const user = await UserSchema.findOne({ nic: req.body.nic });
+        console.log(user._id);
+
+        const updatedPlan = await PlanSchema.findByIdAndUpdate(
+            req.params.planId,
+            { $pull: { acceptedUsers: user._id } },
+            { new: true },
+        );
+
+        logger.info("Remove accepted user query was successful");
+        return res.status(201).json(
+            new SuccessResponse(
+                201,
+                "Remove accepted user query was successful",
+                updatedPlan
+            )
+        );
+    } catch (error) {
+        logger.error("Remove accepted user query was failed");
+        logger.error(error.message);
+        res.status(500).json(
+            new ErrorResponse(
+                500,
+                "Remove accepted user Internal Server Error",
+                error.message
+            )
+        );
+    }
+}
+
 module.exports = {
     addPlan,
     getPlan,
     getPlans,
-    getPlansByCompanyId
+    getPlansByCompanyId,
+    addRejectedUser,
+    addAcceptedUser,
+    removeRejectedUser,
+    removeAcceptedUser
 };

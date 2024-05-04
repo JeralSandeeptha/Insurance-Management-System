@@ -12,6 +12,85 @@ const Plan = () => {
   
     const [plan, setPlan] = useState({});
 
+    const [rejectedNic, setRejectedNic] = useState();
+    const [acceptedNic, setAcceptedNic] = useState();
+
+    const addRejectedUser = (e) => {
+        e.preventDefault();
+        try {
+            axios.put(`${baseURL}/plan/addRejectedUser/${planId}`, {
+                nic: rejectedNic
+            })
+                .then((res) => {
+                    console.log(res.data.data);
+                    getPlan();
+                    setRejectedNic('');
+                    alert('Add new rejected user');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const removeRejectedUser = (userNic) => {
+        try {
+            axios.put(`${baseURL}/plan/removeRejectedUser/${planId}`, {
+                nic: userNic
+            })
+                .then((res) => {
+                    console.log(res.data.data);
+                    getPlan();
+                    alert('Removed rejected user');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const addAcceptedUser = (e) => {
+        e.preventDefault();
+        try {
+            axios.put(`${baseURL}/plan/addAcceptedUser/${planId}`, {
+                nic: acceptedNic
+            })
+                .then((res) => {
+                    console.log(res.data.data);
+                    setAcceptedNic('');
+                    getPlan();
+                    alert('Add new accepted user');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const removeAcceptedUser = (userNic) => {
+        try {
+            axios.put(`${baseURL}/plan/removeAcceptedUser/${planId}`, {
+                nic: userNic
+            })
+                .then((res) => {
+                    console.log(res.data.data);
+                    getPlan();
+                    alert('Removed accepted user');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     const getPlan = () => {
         try {
             axios.get(`${baseURL}/plan/${planId}`)
@@ -77,11 +156,83 @@ const Plan = () => {
                 <div className='users-status'>
                     <div className="left">
                         <h4 style={{marginBottom:'20px'}}>Accepted Users for this Plan</h4>
-                        <div>no users</div>
+                        <form className="space-y-6">
+                            <div className="mt-2">
+                                <input value={acceptedNic} onChange={(e) => {
+                                    setAcceptedNic(e.target.value);
+                                    console.log(e.target.value);
+                                }} placeholder="Enter customer NIC Number" id="email" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            </div>
+
+                            <div>
+                            <button onClick={addAcceptedUser} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add</button>
+                            </div>
+                        </form>
+                        <div style={{
+                            width: '100%',
+                            minHeight: '30vh',
+                            marginTop: '20px'
+                        }}>
+                            {
+                                plan && plan.acceptedUsers && plan.acceptedUsers.length > 0 ? (
+                                    plan.acceptedUsers.map((user, index) => (
+                                        <div className="mb-1 px-4 py-2 rounded-sm cursor-pointer flex items-center justify-between bg-green-200" key={index}>
+                                            <div>
+                                                <h6 className='text-sm'>{user._id}</h6>
+                                                <h5 className='text-xl'>{user.fname} {user.lname}</h5>
+                                                <h5 className='text-lg'>{user.nic}</h5>
+                                            </div>
+                                            <div>
+                                                <button onClick={() => {
+                                                    removeAcceptedUser(user.nic);
+                                                }} className='rounded-sm px-2 py-2 bg-green-500 text-white text-sm'>Remove</button>
+                                            </div>
+                                        </div>
+                                    ))
+                            ) : (
+                                <h5 className="text-sm">No accepted users for this plan</h5>
+                            )}
+                        </div>
                     </div>
                     <div className="right">
                         <h4 style={{marginBottom:'20px'}}>Rejected Users for this Plan</h4>
-                        <div>no users</div>
+                        <form className="space-y-6">
+                            <div className="mt-2">
+                                <input value={rejectedNic} onChange={(e) => {
+                                    setRejectedNic(e.target.value);
+                                    console.log(e.target.value);
+                                }} placeholder="Enter customer NIC Number" id="email" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            </div>
+
+                            <div>
+                            <button onClick={addRejectedUser} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add</button>
+                            </div>
+                        </form>
+                        <div style={{
+                            width: '100%',
+                            minHeight: '30vh',
+                            marginTop: '20px'
+                        }}>
+                            {
+                                plan && plan.rejectedUsers && plan.rejectedUsers.length > 0 ? (
+                                    plan.rejectedUsers.map((user, index) => (
+                                        <div className="mb-1 px-4 py-2 rounded-sm cursor-pointer flex items-center justify-between bg-red-200" key={index}>
+                                            <div>
+                                                <h6 className='text-sm'>{user._id}</h6>
+                                                <h5 className='text-xl'>{user.fname} {user.lname}</h5>
+                                                <h5 className='text-lg'>{user.nic}</h5>
+                                            </div>
+                                            <div>
+                                                <button onClick={() => {
+                                                    removeRejectedUser(user.nic);
+                                                }} className='rounded-sm px-2 py-2 bg-red-500 text-white text-sm'>Remove</button>
+                                            </div>
+                                        </div>
+                                    ))
+                            ) : (
+                                <h5 className="text-sm">No rejected users for this plan</h5>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
