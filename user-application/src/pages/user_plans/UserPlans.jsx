@@ -248,7 +248,7 @@ export default function UserPlans() {
                     <h5 style={{textDecoration:'none'}}>No accepted plans for me</h5>
                   ) : (
                     acceptedPlans.map((plan, index) => {
-                      return (  
+                      return (   
                         <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
                           <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
                           <div>
