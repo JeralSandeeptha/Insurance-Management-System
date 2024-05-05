@@ -16,6 +16,7 @@ const Register = () => {
   const [age, setAge] = useState();
   const [nic, setNic] = useState();
   const [address, setAddress] = useState();
+  const [occupation, setOccupation] = useState();
   const [password, setPassword] = useState();
 
   const register = (e) => {
@@ -29,6 +30,7 @@ const Register = () => {
           age: age,
           nic: nic,
           address: address,
+          occupation: occupation,
           password: password
         });
         axios.post(`${baseURL}/user`, {
@@ -39,6 +41,7 @@ const Register = () => {
           age: age,
           nic: nic,
           address: address,
+          occupation: occupation,
           password: password
         })
           .then((res) => {
@@ -48,10 +51,11 @@ const Register = () => {
           })
           .catch((error) => {
             console.log(error);
-            alert('Please enter all the required fields');
+            alert('Wrong Credentials / Please enter all the required fields');
           })
     }catch (error) {
       console.log(error);
+      alert('Internal server error. Please try again later');
     }
   }
 
@@ -112,6 +116,16 @@ const Register = () => {
                 console.log(e.target.value);
                 setAge(e.target.value);
               }} value={age} style={{border:'1px solid gray'}} id="text" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium leading-6 text-gray-900">Occupation</label>
+            <div className="mt-2">
+              <input onChange={(e) => {
+                console.log(e.target.value);
+                setOccupation(e.target.value);
+              }} value={occupation} style={{border:'1px solid gray'}} id="text" name="occupation" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 

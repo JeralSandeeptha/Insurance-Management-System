@@ -8,7 +8,7 @@ const ErrorResponse = require('../../utils/ErrorResponse');
 
 const registerUser = async (req, res) => {
     try {
-        const { email, password, mobile, fname, lname, age, nic, address} = req.body;
+        const { email, password, mobile, fname, lname, age, nic, address, occupation} = req.body;
         const salt = await  bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
@@ -20,6 +20,7 @@ const registerUser = async (req, res) => {
             age: age,
             nic: nic,
             address: address,
+            occupation: occupation,
             password: hashPassword,
         });
 

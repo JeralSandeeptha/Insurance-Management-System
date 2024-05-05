@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    occupation: {
+        type: String,
+    },
     password: {
         type: String,
         required: true,
