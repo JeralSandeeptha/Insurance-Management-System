@@ -13,46 +13,48 @@ const Register = () => {
   const [mobile, setMobile] = useState();
   const [fName, setFName] = useState();
   const [lName, setLName] = useState();
-  const [age, setAge] = useState();
   const [nic, setNic] = useState();
   const [address, setAddress] = useState();
   const [occupation, setOccupation] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
   const register = (e) => {
     e.preventDefault();
     try {
-        console.log({
-          email: email,
-          mobile: mobile,
-          fname: fName,
-          lname: lName,
-          age: age,
-          nic: nic,
-          address: address,
-          occupation: occupation,
-          password: password
-        });
-        axios.post(`${baseURL}/user`, {
-          email: email,
-          mobile: mobile,
-          fname: fName,
-          lname: lName,
-          age: age,
-          nic: nic,
-          address: address,
-          occupation: occupation,
-          password: password
-        })
-          .then((res) => {
-            console.log(res.data.data);
-            alert('User register successfully');
-            navigate('/login');
+        if (password === confirmPassword) {
+          console.log({
+            email: email,
+            mobile: mobile,
+            fname: fName,
+            lname: lName,
+            nic: nic,
+            address: address,
+            occupation: occupation,
+            password: password
+          });
+          axios.post(`${baseURL}/user`, {
+            email: email,
+            mobile: mobile,
+            fname: fName,
+            lname: lName,
+            nic: nic,
+            address: address,
+            occupation: occupation,
+            password: password
           })
-          .catch((error) => {
-            console.log(error);
-            alert('Wrong Credentials / Please enter all the required fields');
-          })
+            .then((res) => {
+              console.log(res.data.data);
+              alert('User register successfully');
+              navigate('/login');
+            })
+            .catch((error) => {
+              console.log(error);
+              alert('Please enter all the required fields');
+            });
+        } else {
+          alert('Both passwords should be matched');
+        }
     }catch (error) {
       console.log(error);
       alert('Internal server error. Please try again later');
@@ -110,16 +112,6 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium leading-6 text-gray-900">Age</label>
-            <div className="mt-2">
-              <input onChange={(e) => {
-                console.log(e.target.value);
-                setAge(e.target.value);
-              }} value={age} style={{border:'1px solid gray'}} id="text" name="email" type="text" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div>
-          </div>
-
-          <div>
             <label className="block text-sm font-medium leading-6 text-gray-900">Occupation</label>
             <div className="mt-2">
               <input onChange={(e) => {
@@ -153,7 +145,6 @@ const Register = () => {
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium leading-6 text-gray-900">Password</label>
               <div className="text-sm">
-                <a className="font-semibold text-indigo-600 hover:text-indigo-500" style={{textDecoration:'none'}}>Forgot password?</a>
               </div>
             </div>
             <div className="mt-2">
@@ -161,6 +152,20 @@ const Register = () => {
                 console.log(e.target.value);
                 setPassword(e.target.value);
               }} value={password} id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            </div>
+          </div>
+          
+          <div>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+              <div className="text-sm">
+              </div>
+            </div>
+            <div className="mt-2">
+              <input onChange={(e) => {
+                console.log(e.target.value);
+                setConfirmPassword(e.target.value);
+              }} value={confirmPassword} id="password" name="password" type="password" autocomplete="current-password" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 

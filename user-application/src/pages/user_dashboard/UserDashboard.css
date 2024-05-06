@@ -1,0 +1,8 @@
+.dashboard-content {
+    width: 100%;
+    min-height: 70vh;
+    background-image: url('../../assets/img/dashboard.JPG');
+    background-repeat: no-repeat;
+    background-size: cover;
+   background-position: top; 
+}

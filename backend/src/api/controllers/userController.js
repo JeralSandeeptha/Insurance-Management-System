@@ -8,7 +8,7 @@ const ErrorResponse = require('../../utils/ErrorResponse');
 
 const registerUser = async (req, res) => {
     try {
-        const { email, password, mobile, fname, lname, age, nic, address, occupation} = req.body;
+        const { email, password, mobile, fname, lname, nic, address, occupation} = req.body;
         const salt = await  bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
@@ -17,7 +17,6 @@ const registerUser = async (req, res) => {
             mobile: mobile,
             fname: fname,
             lname: lname,
-            age: age,
             nic: nic,
             address: address,
             occupation: occupation,
@@ -49,14 +48,14 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const user = await UserSchema.findOne({ email: req.body.email });
+        const user = await UserSchema.findOne({ nic: req.body.nic });
         if (!user){ 
             logger.error("Email not found"); 
             return res.status(404).json(
                 new ErrorResponse(
                     400,
                     "User login query was failed",
-                    "Email not found"
+                    "NIC not found"
                 )
             );
         }
@@ -172,9 +171,9 @@ const updateUser = async (req, res) => {
                                 mobile: req.body.mobile,
                                 fname: req.body.fname,
                                 lname: req.body.lname,
-                                age: req.body.age,
                                 nic: req.body.nic,
                                 address: req.body.address,
+                                occupation: req.body.occupation,
                                 password: req.body.password,
                             }}, 
                             { new: true }

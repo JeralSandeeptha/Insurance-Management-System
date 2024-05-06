@@ -17,10 +17,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    age: {
-        type: String,
-        required: true,
-    },
     nic: {
         type: String,
         required: true,

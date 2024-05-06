@@ -13,18 +13,18 @@ const Login = () => {
 
   const { setToken, setUser, setIsLoggedIn, isLoggedIn, user, token } = useContext(AppContext);
 
-  const [email, setEmail] = useState();
+  const [nic, setNic] = useState();
   const [password, setPassword] = useState();
 
   const login = (e) => {
     e.preventDefault();
     try {
         console.log({
-          email: email,
+          nic: nic,
           password: password
         });
         axios.post(`${baseURL}/user/login`, {
-          email: email,
+          nic: nic,
           password: password
         })
           .then((res) => {
@@ -74,11 +74,11 @@ const Login = () => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6">
           <div>
-            <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+            <label for="email" className="block text-sm font-medium leading-6 text-gray-900">NIC</label>
             <div className="mt-2">
-              <input value={email} onChange={(e) => {
+              <input value={nic} onChange={(e) => {
                 console.log(e.target.value);
-                setEmail(e.target.value);
+                setNic(e.target.value);
               }} id="email" name="email" type="email" autocomplete="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>

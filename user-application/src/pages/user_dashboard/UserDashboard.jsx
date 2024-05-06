@@ -4,6 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
+import './UserDashboard.css';
 
 const user = {
   name: 'Tom Cook',
@@ -220,7 +221,7 @@ export default function UserDashboard() {
         </header>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-
+            <div className="dashboard-content"></div>
           </div>
         </main>
       </div>
