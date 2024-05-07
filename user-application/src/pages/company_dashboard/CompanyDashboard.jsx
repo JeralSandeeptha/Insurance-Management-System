@@ -1,10 +1,12 @@
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/icon/icon-02-primary.png';
 import { Link, useNavigate } from 'react-router-dom';
 import './CompanyDashboard.css';
 import { AppContext } from '../../context/AppContext';
+import baseURL from '../../api/baseURL';
+import axios from 'axios';
 
 const user = {
   name: 'Tom Cook',
@@ -28,7 +30,9 @@ function classNames(...classes) {
 export default function CompanyDashboard() {
 
   const { user, isLoggedIn } = useContext(AppContext);
-  const { name } = user;
+  const { company, name } = user;
+
+  const [plans, setPlans] = useState([]);
 
   const navigate = useNavigate();
 
@@ -41,6 +45,25 @@ export default function CompanyDashboard() {
       navigate('/');
     }, 100); 
   }
+
+  const getPlans = () => {
+    try {
+      axios.get(`${baseURL}/plan/getByCompanyId/${company}`) 
+        .then((res) => {
+          console.log(res.data.data);
+          setPlans(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getPlans();
+  });
 
   console.log(user, isLoggedIn);
 
@@ -220,7 +243,30 @@ export default function CompanyDashboard() {
         <div className='profile-bg'></div>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-              
+            <div style={{}}>
+              <h2 style={{textAlign:'center'}}>Our Plans</h2>
+            </div>
+            <div style={{marginBottom:'20px', paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}} className="left">
+              {
+                plans.length < 0 ? (
+                  <h5 style={{textDecoration:'none'}}>No Insurance Plans...</h5>
+                ) : (
+                  plans.map((plan, index) => {
+                    return (  
+                      <Link to={`/company/dashboard/plans/${plan._id}`}>
+                        <div style={{marginBottom: '30px', backgroundColor: 'gray', cursor: 'pointer'}} class="bg-white" key={index}>
+                          <img style={{height: '300px', width: '500px'}} src={plan.image} alt="image"/>
+                          <div>
+                            <h4 style={{textDecoration:'none', marginTop: '10px'}}>{plan.name}</h4>
+                            <h6 style={{textDecoration:'none'}}>Rs: {plan.price} /-</h6>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })
+                )
+              }
+            </div>
           </div>
         </main>
       </div>

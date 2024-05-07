@@ -56,7 +56,7 @@ export default function CompanyPlans() {
           setDescription('');
           setPrice('');
           alert('New Plan Added Successfully');
-          getPlans();
+          // getPlans();
         })
         .catch((error) => {
           console.log(error);
@@ -67,24 +67,24 @@ export default function CompanyPlans() {
     }
   }
 
-  const getPlans = () => {
-    try {
-      axios.get(`${baseURL}/plan/getByCompanyId/${company}`) 
-        .then((res) => {
-          console.log(res.data.data);
-          setPlans(res.data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
+  // const getPlans = () => {
+  //   try {
+  //     axios.get(`${baseURL}/plan/getByCompanyId/${company}`) 
+  //       .then((res) => {
+  //         console.log(res.data.data);
+  //         setPlans(res.data.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }
 
-  useEffect(() => {
-    getPlans();
-  });
+  // useEffect(() => {
+  //   getPlans();
+  // });
 
   return (
     <>
@@ -250,8 +250,8 @@ export default function CompanyPlans() {
           </div>
         </header>
         <main>
-        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr'}} className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}} className="left">
+        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            {/* <div style={{paddingRight: '20px', display:'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}} className="left">
               {
                 plans.length < 0 ? (
                   <h5 style={{textDecoration:'none'}}>No Insurance Plans...</h5>
@@ -271,10 +271,12 @@ export default function CompanyPlans() {
                   })
                 )
               }
-            </div>
-            <div className="right">
+            </div> */}
+            <div className="right" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
               <h3 style={{marginBottom: '20px'}}>Add Insurance Plan</h3>
-              <form className="space-y-6">
+              <form style={{
+                width: '500px'
+              }} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium leading-6 text-gray-900">Name</label>
                   <div className="mt-2">
@@ -286,7 +288,7 @@ export default function CompanyPlans() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">Plan Description</label>
                   <div className="mt-2">
                     <input value={description} onChange={(e) => {
                       console.log(e.target.value);
