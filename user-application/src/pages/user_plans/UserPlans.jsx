@@ -18,7 +18,7 @@ const user = {
 }
 const navigation = [
   { name: 'Dashboard', href: '/user/dashboard', current: false },
-  { name: 'My Plans', href: '/user/dashboard/plans', current: true },
+  { name: 'My Plans', href: '/user/dashboard/myplans', current: true },
   { name: 'Search Plans', href: '/user/dashboard/plans', current: false },
   // { name: 'Calendar', href: '#', current: false },
   // { name: 'Reports', href: '#', current: false },

@@ -5,6 +5,10 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    brn: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,

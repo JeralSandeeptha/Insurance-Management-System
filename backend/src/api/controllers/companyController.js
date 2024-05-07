@@ -8,13 +8,14 @@ const SuccessResponse = require('../../utils/SuccessResponse');
 const ErrorResponse = require('../../utils/ErrorResponse');
 
 const registerCompany = async (req, res) => {
-    const { name, email, contact, address, password } = req.body;
+    const { name, email, contact, address, password, brn } = req.body;
         try {
             const salt = await  bcrypt.genSalt(10);
             const hashPassword = await bcrypt.hash(password, salt);
 
             const newUser = new CompanyModel({
                 name: name,
+                brn: brn,
                 email: email,
                 contact: contact,
                 address: address,

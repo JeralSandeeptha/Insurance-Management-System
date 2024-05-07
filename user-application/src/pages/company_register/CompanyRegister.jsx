@@ -10,6 +10,7 @@ const CompanyRegister = () => {
     const navigate = useNavigate();
 
     const [name, setName] = useState();
+    const [brn, setBrn] = useState();
     const [email, setEmail] = useState();
     const [mobile, setMobile] = useState();
     const [address, setAddress] = useState();
@@ -20,6 +21,7 @@ const CompanyRegister = () => {
         try {
             console.log({
               email: email,
+              brn: brn,
               contact: mobile,
               name: name,
               address: address,
@@ -27,6 +29,7 @@ const CompanyRegister = () => {
             });
             axios.post(`${baseURL}/company`, {
               email: email,
+              brn: brn,
               contact: mobile,
               name: name,
               address: address,
@@ -66,6 +69,16 @@ const CompanyRegister = () => {
                             console.log(e.target.value);
                             setName(e.target.value);
                         }} id="email" name="email" type="email" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label className="block text-sm font-medium leading-6 text-gray-900">Business Registration Number</label>
+                        <div className="mt-2">
+                        <input value={brn} onChange={(e) => {
+                            console.log(e.target.value);
+                            setBrn(e.target.value);
+                        }} id="brn" name="brn" type="text" required className="text-field-custom block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
 
